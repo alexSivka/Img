@@ -52,7 +52,7 @@ class Img {
         'wm_text' => '',
         'wm_text_color' => '#FFFFFF',
         'wm_text_size' => 32,
-        'wm_text_font' => __DIR__ . '/arial.ttf',
+        'wm_text_font' => '',
         'placeholder' => '',
         'quality' => 80
     );
@@ -238,7 +238,7 @@ class Img {
             if(is_array($v)) $v = implode('', $v);
 
             if(strpos($key, 'wm') === 0 && ($params['watermark'] || $params['wm_text'])) $wm .= $v;
-            else $shorts[] = strtolower($key . str_replace(array(' ','#'), '', $v));
+            elseif(strpos($key, 'wm') !== 0) $shorts[] = strtolower($key . str_replace(array(' ','#'), '', $v));
         }
 
         if($wm) $shorts[] = 'wm_' . hash('crc32', $wm);
@@ -302,6 +302,7 @@ class Img {
      */
     public static function setParams($params){
         $params = self::setFromAliases($params);
+        self::$defaults['wm_text_font'] = __DIR__ . '/arial.ttf';
         $params = array_merge(self::$defaults, $params);
         if($params['crop'] && !is_string($params['crop'])) $params['crop'] = 'center';
         return $params;
