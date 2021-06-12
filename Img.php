@@ -117,12 +117,12 @@ class Img {
         if(!$filepath = self::checkFilepath($fileName, $params)) return '';
         $newFilename = self::getNewFileName($filepath, $params);
 
-
+        if(isset($params['onlyPath'])) return self::getRelativeLink($newFilename);
 
         $filepath = self::getAbsolutePath($filepath);
         $srcTime = filemtime($filepath);
 
-        //if(is_file($newFilename) && $srcTime == filemtime($newFilename) ) return self::getRelativeLink($newFilename);
+        if(is_file($newFilename) && $srcTime == filemtime($newFilename) ) return self::getRelativeLink($newFilename);
 
         $image = new self($filepath);
 
